@@ -1,0 +1,416 @@
+package chatting;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.Window;
+import java.awt.color.ColorSpace;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.EmptyStackException;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.Timer;
+import javax.swing.border.EmptyBorder; 
+
+
+public class Client extends JFrame implements ActionListener {
+
+	 
+	
+	JPanel p1;
+	JTextField t1;
+	JButton b1;
+	static JPanel   a1;
+	static Box vertical = Box.createVerticalBox();
+	
+
+	
+	static ServerSocket ss;
+	static Socket socket;
+	static DataInputStream din;
+	static DataOutputStream dout;
+	Boolean typing;
+
+	public Client() {
+		
+        
+		ImageIcon i99 = new ImageIcon(this.getClass().getResource("/chat.png"));
+		this.setIconImage(i99.getImage());
+		
+		p1 = new JPanel();
+		p1.setLayout(null);
+		p1.setBackground(new Color(7,94,84));
+		p1.setBounds(5,5,450,40);
+	add(p1);
+		
+		ImageIcon i1 = new ImageIcon(this.getClass().getResource("/bb8.png"));
+		Image i2 = i1.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT);
+		ImageIcon i3 = new ImageIcon(i2);
+		
+		JLabel l1 = new JLabel(i3);
+		l1.setBounds(5, 5, 30, 30);
+		p1.add(l1);
+		
+		l1.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent ae)
+			{
+				System.exit(0);
+			}
+		});
+		
+		ImageIcon i4 = new ImageIcon(this.getClass().getResource("/avtar_2.png"));
+		Image i5 = i4.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT);
+		ImageIcon i6 = new ImageIcon(i5);
+		
+		JLabel l2 = new JLabel(i6);
+		l2.setBounds(45, 5, 30, 30);
+		try {
+		p1.add(l2);
+		
+		
+		l2.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				System.out.println("Key preseed");
+				
+				System.out.println("Hello");
+				try {
+					JFileChooser chooser = new JFileChooser();
+					chooser.showOpenDialog(null);
+					
+					File file = chooser.getSelectedFile();
+					String filename = file.getAbsolutePath();
+					
+					l2.setIcon(new ImageIcon(new ImageIcon(filename).getImage().getScaledInstance(l2.getWidth(), l2.getHeight(), Image.SCALE_DEFAULT)));
+					
+				} catch (Exception e) {
+					// TODO: handle exception
+					System.out.println("Exception Handled");
+				}
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		}
+		
+		catch (NullPointerException e) {
+			// TODO: handle exception
+			System.out.print("Exception Handled");
+		}
+		
+		
+		catch (Exception e) {
+		
+			System.out.println("Noting selected");
+		}
+		
+		
+		JLabel name  = new JLabel("Client");
+		name.setFont(new Font("cursive", Font.BOLD, 15));
+		name.setBounds(90, 0, 120, 18);
+		name.setForeground(Color.WHITE);
+		p1.add(name);
+		
+
+		JLabel active_status  = new JLabel("Active Now");
+		active_status.setFont(new Font("verdana", Font.PLAIN, 12));
+		active_status.setBounds(90, 15, 130, 20);
+		active_status.setForeground(Color.WHITE);
+		p1.add(active_status);
+		
+		Timer timer = new Timer(1, new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+				if(!typing)
+				{
+					active_status.setText("Active Now");
+					
+				}
+				
+				
+			}
+		});
+		
+		timer.setInitialDelay(2000);
+		
+		ImageIcon i7 = new ImageIcon(this.getClass().getResource("/voice.png"));
+		Image i8 = i7.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT);
+		ImageIcon i9 = new ImageIcon(i8);
+		
+		JLabel l3 = new JLabel(i9);
+		l3.setBounds(390, 5, 30, 30);
+		p1.add(l3);
+		l3.addMouseListener(new MouseListener() {
+			
+			boolean value = false;
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+             System.out.println("Hello world Pressed");	
+             Thread t1 = new Thread(new SpeechDialog());
+             t1.start();
+             Thread t2 = new Thread(new VoiceAssis());
+             t2.start();
+             
+			}
+			
+		});
+		
+	
+		
+		
+		
+		a1 = new JPanel();
+		a1.setBounds(5,45,460,615);
+		//a1.setBackground(Color.PINK);
+		a1.setFont(new Font("san_serif",Font.PLAIN, 15));
+		
+		add(a1);
+		
+		t1 = new JTextField();
+		t1.setBounds(5, 665, 300, 30);
+		a1.setFont(new Font("san_serif",Font.PLAIN, 14));
+	
+		add(t1);
+		
+		t1.addKeyListener(new KeyListener() {
+					
+					@Override
+					public void keyTyped(KeyEvent arg0) {
+						// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void keyReleased(KeyEvent arg0) {
+			// TODO Auto-generated method stub
+			typing = false;
+			
+			if(!timer.isRunning())
+			{
+				timer.start();
+			}
+			
+		}
+		
+		@Override
+		public void keyPressed(KeyEvent arg0) {
+			// TODO Auto-generated method stub
+			active_status.setText("Typing...");;
+						timer.stop();
+						typing = true;
+			}
+		});
+		
+		
+		
+
+		
+		
+		b1 = new JButton("Send");
+		b1.setBounds(355, 665, 90, 30);
+		b1.setBackground(new Color(7,94,84));
+		b1.setForeground(Color.GREEN);
+		add(b1);
+		b1.addActionListener(this);
+		
+		
+		getContentPane().setBackground(Color.black);
+		
+		setLayout(null);
+		setSize(450, 700);
+		setLocation(400, 250);
+		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setUndecorated(true);
+		setVisible(true); 
+        
+	}
+//	private void setIconImage(Image image) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+
+	public void actionPerformed(ActionEvent e) 
+	{
+		try {
+			String out = t1.getText();
+			
+			JPanel p2 = formatelabel(out);
+			a1.setLayout(new BorderLayout());
+			
+			JPanel right = new JPanel(new BorderLayout());
+			right.add(p2,BorderLayout.LINE_END);
+			vertical.add(right);
+			
+			a1.add(vertical,BorderLayout.PAGE_START);
+			//a1.add(p2);
+			
+			dout.writeUTF(out);
+			t1.setText("");
+			}
+			
+			catch (Exception exception) {
+				
+			}
+	}
+	
+	public static JPanel formatelabel(String out)
+	{
+		 JPanel p3 = new JPanel();
+		p3.setLayout(new BoxLayout(p3, BoxLayout.Y_AXIS));
+		
+		 JLabel l1 = new JLabel(out);
+		 l1.setBackground(new Color(37,211,102));
+		 l1.setOpaque(true);
+		 
+		 l1.setFont(new Font("Tahoma",Font.PLAIN,16));
+		 l1.setBorder(new EmptyBorder(15,15,15,50));
+		 
+		 Calendar calendar = Calendar.getInstance();
+		 SimpleDateFormat simpleDateFormat  = new SimpleDateFormat("hh:mm");
+		 
+		 JLabel l2 = new JLabel();
+		 l2.setText(simpleDateFormat.format(calendar.getTime()));
+		 
+		 
+		 p3.add(l1);
+		 p3.add(l2);
+		 return p3;
+	}
+		///////////////////////////////////////////////////////////////////////////////////
+	public static void main(String[] args) throws Exception {
+		new Client();
+		 try{
+	            
+			    socket = new Socket("127.0.0.1", 4000);
+	            din  = new DataInputStream(socket.getInputStream());
+	            dout = new DataOutputStream(socket.getOutputStream());
+	            
+	            String msginput = "";
+	            
+		    
+	                a1.setLayout(new BorderLayout());
+	                while(true) {
+		            msginput = din.readUTF();
+	            	JPanel p2 = formatelabel(msginput);
+	                JPanel left = new JPanel(new BorderLayout());
+	                left.add(p2, BorderLayout.LINE_START);
+	                
+	                vertical.add(left);
+	                vertical.add(Box.createVerticalStrut(15));
+	                a1.add(vertical, BorderLayout.PAGE_START);
+	               // validate();
+	                }
+	            
+	        }catch(Exception e){}
+		}
+	}
+
+/////////////////////////////////////////////////////////////////////////////
+
+
+class SpeechDialog extends JFrame implements Runnable //CardLayout
+{
+	public SpeechDialog() 
+	{
+		
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		JLabel l = new JLabel("Hey...Please Speack");
+		l.setForeground(new Color(7,94,84));
+		l.setBackground(new Color(7,94,84));
+		l.setIcon(new ImageIcon(this.getClass().getResource("/voice.png")));
+		 l.setFont(new Font("Tahoma",Font.BOLD,16));
+		add(l);
+		setBackground(Color.blue);
+		setLocation(600, 300);  
+		//setBounds(500, 500, 30, 20);
+		setLayout(new FlowLayout());  
+		setVisible(true);
+		setSize(300,200);
+		setUndecorated(true);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
+	}
+}
