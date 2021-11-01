@@ -1,0 +1,3 @@
+This is texting app where user can sent data in realtime without any time delay with the help of Server Socket and Socket class.
+Chat_1 is user 1 with Server Class and Chat_2 is Server Socket Class.
+We have also in built the Sphinx 4 Api for voice recognition modeule to make our app to work like Shiri or Google assistent.
